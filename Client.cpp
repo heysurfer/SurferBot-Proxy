@@ -32,11 +32,10 @@ int main()
         return _client;
     };
     auto  get_packet_type = [](ENetPacket* packet) { if (packet->dataLength > 3)  return *packet->data; else return (enet_uint8)0; };
-
     ENetHost* client = createHost();
     ENetAddress address;
-    enet_address_set_host(&address, "proxy.surferwallet.net");/*Set SurferBotNet Server IP*/
-    address.port = 4444;/*Set SurferBotNet Server Port*/
+    enet_address_set_host(&address, "proxy.surferwallet.net");/*SurferBot Server*/
+    address.port = 4444;
     auto _peer = enet_host_connect(client, &address, 5, 0);
     while (true)
     {
@@ -47,7 +46,7 @@ int main()
             switch (event.type)
             {
             case ENET_EVENT_TYPE_CONNECT: {
-                /*Send Authentication Request for access ip adress*/
+                /*Send Authentication Request for access the proxy*/
                 const char* _password = "0000@xxxxxxxx";
                 ENetPacket* packet = enet_packet_create(_password, strlen(_password) + 1, ENET_PACKET_FLAG_RELIABLE);
                 enet_peer_send(event.peer, 1/*1 = Login Channel*/, packet);
